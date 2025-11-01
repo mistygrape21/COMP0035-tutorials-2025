@@ -17,6 +17,7 @@ SQLModel.metadata.create_all(engine)
 The following example is from the SQLModel documentation:
 
 ```python
+from __future__ import annotations
 from sqlmodel import Field, SQLModel, create_engine
 
 
@@ -34,26 +35,33 @@ SQLModel.metadata.create_all(engine)
 
 ## Code files and structure
 
-Typically, you will see model classes saved in a file called models.py.
+Typically, you will see model classes saved in a file called `models.py`.
 
-The code to create the database using these models is likely in another file.
+The code to create the database using these models is likely in another file, e.g. `database.py`.
 
-And the code to run the app would call the function to create the database.
+The code to run the app would call the function to create the database using the models. This is likely to be in an
+`app.py` or `main.py` module.
 
-This is shown in
+The structure of this code is shown in
 the [SQLModel tutorial here](https://sqlmodel.tiangolo.com/tutorial/code-structure/#single-module-for-models).
 
-## Activity: Create the database
+### Activity: Create the database using this code structure
 
-Write code in `models.py`, `database.py` and `app.py` to create the database.
+Write code to create the paralympics database separated into `models.py`, `database.py` and `app.py` files (modules).
 
 You can copy the model code
-from [starter_create_db_sqlmodel.py](../../src/activities/starter/starter_create_db_sqlmodel.py).
+from [starter_models.py](../../src/activities/starter/starter_models.py) to `models.py`.
 
-Use your code to create the database. Use a new database name `paralympics_sqlmodel.db` as you probably already have one
-called `paralympics.db`.
+Write code in `database.py` and `app.py` to create the database. Use a new database name `paralympics_sqlmodel.db` as
+you probably already have one called `paralympics.db` from an earlier activity.
 
-## Reflection on using copilot to generate the SQLModels from a sql schema
+[Next activity](5-06-sqlmodel-add-data.md)
+
+The section below is optional, you can skip if you wish.
+
+## Using copilot to generate the SQLModels from a sql schema
+
+This is a reflection on my experience of using copilot to generate SQLModels from a SQL schema.
 
 I generated the initial version of the SQLModel classes using copilot in Pycharm with paralympics_schema.sql attached
 and the prompt: "Based on the .sql schema, write SQLModel classes"
@@ -65,13 +73,16 @@ The generated code was then checked against current SQLModel syntax:
 
 Limitations of the initial copilot-generated solution:
 
-- The attributes for date were treated as string. I decided to leave this since SQLite stores date as string
-- Check constraints were not recognised. These are not directly supported in SQLModel in the current version.
-  You need use SQLAlchemy syntax. This is not in the SQLModel documentation and the SQLAlchemy documentation is complex
-  to follow. This article has a clear and shorter summary:
+- The attributes for date were treated as string. I decided to leave this since SQLite store a date as a string.
+- Foreign key constraints were not recognised.
+  The [SQLModel documentation](https://sqlmodel.tiangolo.com/tutorial/relationship-attributes/cascade-delete-relationships/#ondelete-options)
+  explains how to include these if you need to use them.
+- Check constraints were not recognised. These are not directly supported in SQLModel in the current version, SQLAlchemy
+  syntax was needed. I did not find this in the SQLModel documentation. The SQLAlchemy documentation can be complex
+  to follow so this article has a clear and shorter summary:
   https://plainenglish.io/blog/creating-table-constraints-with-sqlmodel
 
-This table shows a solution for the check constraint:
+The following shows one solution for the check constraint:
 
 ```python
 from typing import Optional
@@ -95,7 +106,5 @@ class Team(SQLModel, table=True):
     )
 ```
 
-- Foreign key constraints were also not recognised. These are in
-  the [SQLModel documentation](https://sqlmodel.tiangolo.com/tutorial/relationship-attributes/cascade-delete-relationships/#ondelete-options)
 
-[Next activity](5-06-sqlmodel-add-data.md)
+
