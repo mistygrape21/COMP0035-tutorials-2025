@@ -21,11 +21,11 @@ You can either add the code to one of your existing functions, or create a new o
 2. Add code to a function to create a histogram from the data:
 
     ```python
-    # Create a histogram of the DataFrame
+    #Create a histogram of the DataFrame
     df.hist()
 
     # Show the plot
-    plt.show()
+    plt.show() 
     ```
 3. Run the code to generate the figure. It should generate a figure that has histograms for all the columns in the
    data.
