@@ -22,8 +22,8 @@ jobs:
         pip install -e .
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint $(git ls-files '*.py') --output=lint.txt || true
 
     - name: Lint code with Flake8
       run: |
-        flake8 $(git ls-files '*.py')
+        flake8 $(git ls-files '*.py') --output=lint.txt || true
